@@ -4,6 +4,7 @@ export default class Sprite {
     this.scene = scene;
     this.sprite = scene.physics.add.image(x, y, image);
     this.destroyed = false;
+    this.spawnTime = 0.0;
   }
 
   wrap() {
@@ -27,6 +28,16 @@ export default class Sprite {
 
   isVisible() {
     return this.sprite.visible;
+  }
+
+  setSpawnTime(time){
+    this.spawnTime = time;
+  }
+
+  doIDie(time){
+      if ((time - this.spawnTime) > 50){
+          this.destroy();
+      }
   }
 
   /**
@@ -57,9 +68,9 @@ export default class Sprite {
    * 
    * @param {Number} acceleration 
    */
-  setForwardAcceleration(acceleration) {
+  setForwardAcceleration(acc) {
     if (!this.isDestroyed()) {
-
+        this.setAcceleration(Math.cos(this.getRotation()) * acc, Math.sin(this.getRotation()) * acc);
     }
   }
 
@@ -75,9 +86,9 @@ export default class Sprite {
    * 
    * @param {Number} velocity 
    */
-  setForwardVelocity(velocity) {
+  setForwardVelocity(vel) {
     if (!this.isDestroyed()) {
-      
+      this.setVelocity(Math.cos(this.getRotation()) * vel, Math.sin(this.getRotation()) * vel);
     }
   }
 
